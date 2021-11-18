@@ -1,0 +1,33 @@
+{
+  "collection": "@nestjs/schematics",
+  "sourceRoot": "src",
+  "compilerOptions": {
+    "deleteOutDir": true,
+    "plugins": [
+      {
+        "name": "@nestjs/graphql",
+        "options": {
+          "typeFileNameSuffix": [
+            ".dto.ts",
+            ".args.ts",
+            ".input.ts",
+            ".entity.ts",
+            ".model.ts"
+          ],
+          "introspectComments": true
+        }
+      },
+      {
+        "name": "@nestjs/swagger",
+        "options": {
+          "dtoFileNameSuffix": [
+            ".dto.ts",
+            ".entity.ts"
+          ],
+          "controllerFileNameSuffix": ".controller.ts",
+          "introspectComments": true
+        }
+      }
+    ]
+  }
+}
