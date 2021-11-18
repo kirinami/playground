@@ -33,12 +33,7 @@ export class User {
   @Column()
   lastName!: string;
 
-  @Field()
-  @Column({
-    default: false,
-  })
-  active!: boolean;
-
+  @ApiHideProperty()
   @Field(() => [Todo])
   @OneToMany(() => Todo, todo => todo.user)
   todos!: Todo[];

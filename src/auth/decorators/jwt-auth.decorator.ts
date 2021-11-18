@@ -9,6 +9,12 @@ export function JwtAuth() {
     ApiBearerAuth(),
     ApiUnauthorizedResponse({
       description: 'Unauthorized',
+      schema: {
+        properties: {
+          statusCode: { type: 'number', example: 401 },
+          message: { type: 'string' },
+        },
+      },
     }),
   );
 }

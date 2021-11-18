@@ -1,5 +1,4 @@
-import { Transform } from 'class-transformer';
-import { IsBoolean, IsEmail, IsOptional, Length } from 'class-validator';
+import { IsEmail, Length } from 'class-validator';
 
 export class CreateUserDto {
   @IsEmail()
@@ -13,9 +12,4 @@ export class CreateUserDto {
 
   @Length(2, 32)
   lastName!: string;
-
-  @IsOptional()
-  @IsBoolean()
-  @Transform(({ value }) => value === 'true' || value === true || value === 1 || value === '1')
-  active?: boolean;
 }

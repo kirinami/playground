@@ -4,8 +4,6 @@ import { PassportModule } from '@nestjs/passport';
 
 import { UsersModule } from '@/users/users.module';
 
-import { FacebookStrategy } from './strategies/facebook.strategy';
-import { GoogleStrategy } from './strategies/google.strategy';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { LocalStrategy } from './strategies/local.strategy';
 import { AuthController } from './auth.controller';
@@ -23,8 +21,6 @@ import { AuthService } from './auth.service';
     UsersModule,
   ],
   providers: [
-    FacebookStrategy,
-    GoogleStrategy,
     JwtStrategy,
     LocalStrategy,
     AuthService,

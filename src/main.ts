@@ -32,13 +32,13 @@ async function main() {
     SwaggerModule.setup('docs', app, SwaggerModule.createDocument(
       app,
       new DocumentBuilder()
-        .setTitle('Nest API')
-        .setDescription('The Nest API documentation')
+        .setTitle('Todos API')
+        .setDescription('The Todos API documentation')
         .setVersion('0.0.1')
         .addBearerAuth()
         .build(),
     ), {
-      customSiteTitle: 'Nest API',
+      customSiteTitle: 'Todos API',
       swaggerOptions: {
         persistAuthorization: true,
       },

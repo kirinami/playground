@@ -1,4 +1,5 @@
 import { Field, Int, ObjectType } from '@nestjs/graphql';
+import { ApiHideProperty } from '@nestjs/swagger';
 import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 
 import { User } from '@/users/user.entity';
@@ -21,6 +22,7 @@ export class Todo {
   @Column()
   completed!: boolean;
 
+  @ApiHideProperty()
   @Field(() => User)
   @ManyToOne(() => User, user => user.todos)
   user!: User;

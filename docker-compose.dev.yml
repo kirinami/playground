@@ -3,14 +3,14 @@ version: '3.7'
 services:
   postgres:
     environment:
-      POSTGRES_USER: todos
-      POSTGRES_PASSWORD: JNaKoqwtu2qwefa5
+      POSTGRES_USER: $POSTGRES_USER
+      POSTGRES_PASSWORD: $POSTGRES_PASSWORD
     image: postgres:13.2-alpine
     volumes:
       - postgres:/var/lib/postgresql/data
     ports:
       - 5432:5432
-    restart: always
+    restart: unless-stopped
 
 volumes:
   postgres:

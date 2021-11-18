@@ -1,20 +1,12 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 
 import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './user.entity';
 import { UserRepository } from './user.repository';
 
 @Injectable()
 export class UsersService {
   constructor(private readonly userRepository: UserRepository) {
-  }
-
-  async findAll(page: number, size: number) {
-    return this.userRepository.find({
-      skip: Math.abs(size * (page - 1)),
-      take: Math.abs(size),
-    });
   }
 
   async findOneById(id: number) {
@@ -49,19 +41,12 @@ export class UsersService {
     return this.userRepository.save(this.userRepository.create({
       ...createUserDto,
       password,
-    }));
-  }
-
-  async update(id: number, updateUserDto: UpdateUserDto) {
-    const password = updateUserDto.password ? await User.hashPassword(updateUserDto.password) : undefined;
-
-    return this.userRepository.update(id, {
-      ...updateUserDto,
-      password,
-    });
-  }
-
-  async delete(id: number) {
-    return this.userRepository.delete(id);
+    }))
+      .catch((err) => {
+        if (/(email)[\s\S]+(already exists)/.test(err.detail)) {
+          throw new BadRequestException(['email already exists']);
+        }
+        return err;
+      });
   }
 }
