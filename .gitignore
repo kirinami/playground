@@ -1,22 +1,37 @@
-# IDEs
-.idea
-.vscode
-
-# OS
+# system
 .DS_Store
 
-# compiled output
-/.nyc_output
-/coverage
-/dist
-/node_modules
-/.env.local
-/.env.*.local
+# ide
+.idea/*
+!.idea/codeStyles
+!.idea/runConfigurations
+!.idea/encodings.xml
+!.idea/modules.xml
+!.idea/webResources.xml
+!.idea/*.iml
+!.idea/.gitignore
 
-# Logs
-logs
-*.log
-npm-debug.log*
+# dependencies
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+node_modules
 yarn-debug.log*
 yarn-error.log*
-lerna-debug.log*
+
+# compiled output
+coverage
+build
+dist
+out
+out-tsc
+tmp
+.eslintcache
+
+# misc
+.env.local
+.env.*.local

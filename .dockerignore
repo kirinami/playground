@@ -1,26 +1,23 @@
+# system
+.DS_Store
+
 # git
 .git
 .github
 
-# IDEs
+# ide
 .idea
 .vscode
 
-# OS
-.DS_Store
-
 # compiled output
-/.nyc_output
-/coverage
-/dist
-/node_modules
-/.env.local
-/.env.*.local
+coverage
+build
+dist
+out
+out-tsc
+tmp
+.eslintcache
 
-# Logs
-logs
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-lerna-debug.log*
+# misc
+.env.local
+.env.*.local
