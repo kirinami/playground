@@ -1,5 +1,5 @@
-import { Controller, Get } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { Controller, Get, Query } from '@nestjs/common';
+import { ApiBadRequestResponse, ApiQuery, ApiTags } from '@nestjs/swagger';
 
 import { CurrentUser } from '@/auth/decorators/current-user.decorator';
 import { JwtAuth } from '@/auth/decorators/jwt-auth.decorator';
@@ -14,9 +14,27 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {
   }
 
+  @ApiBadRequestResponse({
+    description: 'Bad Request',
+    schema: {
+      properties: {
+        statusCode: { type: 'number', example: 400 },
+        message: { type: 'string' },
+      },
+    },
+  })
+  @ApiQuery({
+    name: 'relations',
+    type: 'string',
+    isArray: true,
+    style: 'form',
+    explode: false,
+    required: false,
+    allowEmptyValue: false,
+  })
   @Get('profile')
-  async retrieveProfile(@CurrentUser() user: User) {
-    return this.usersService.findOneById(user.id);
+  async retrieveProfile(@CurrentUser() user: User, @Query('relations') relations?: string) {
+    return this.usersService.findOneById(user.id, relations?.split(',').map(r => r.trim()).filter(Boolean));
   }
 }
 

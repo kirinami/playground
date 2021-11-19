@@ -17,6 +17,7 @@ module.exports = {
     'no-empty-pattern': 'off',
     'no-nested-ternary': 'off',
     'no-param-reassign': 'off',
+    'no-confusing-arrow': 'off',
     'no-multiple-empty-lines': [
       'error', {
         max: 1,

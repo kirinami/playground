@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { DeepPartial, In } from 'typeorm';
 import { groupBy } from 'lodash';
 
@@ -15,16 +15,30 @@ export class TodosService {
     return this.todoRepository.find();
   }
 
-  async findOneById(id: number) {
+  async findOneById(id: number, relations?: string[]) {
+    if (relations && !relations.includes('user')) throw new BadRequestException();
+
     return this.todoRepository.findOne({
       where: {
         id,
       },
+      relations,
     });
   }
 
-  async findAllByUserId(userId: number) {
-    return createDataLoader<Todo[]>('todos/findAllByUserId', async (userIds) => {
+  async findAllByUserId(userId: number, relations?: string[]) {
+    if (relations && !relations.includes('user')) throw new BadRequestException();
+
+    return this.todoRepository.find({
+      where: {
+        userId,
+      },
+      relations,
+    });
+  }
+
+  async loadAllByUserId(userId: number) {
+    return createDataLoader<number, Todo[]>('todos/findAllByUserId', async (userIds) => {
       const todos = await this.todoRepository.find({
         where: {
           userId: In(userIds),

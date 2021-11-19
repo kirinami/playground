@@ -9,11 +9,14 @@ export class UsersService {
   constructor(private readonly userRepository: UserRepository) {
   }
 
-  async findOneById(id: number) {
+  async findOneById(id: number, relations?: string[]) {
+    if (relations && !relations.includes('todos')) throw new BadRequestException();
+
     return this.userRepository.findOne({
       where: {
         id,
       },
+      relations,
     });
   }
 

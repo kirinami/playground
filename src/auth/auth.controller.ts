@@ -1,5 +1,12 @@
 import { Body, Controller, HttpCode, HttpStatus, Post, UseGuards } from '@nestjs/common';
-import { ApiBadRequestResponse, ApiBody, ApiOkResponse, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
+import {
+  ApiBadRequestResponse,
+  ApiBody,
+  ApiCreatedResponse,
+  ApiOkResponse,
+  ApiTags,
+  ApiUnauthorizedResponse,
+} from '@nestjs/swagger';
 
 import { User } from '@/users/user.entity';
 
@@ -40,8 +47,8 @@ export class AuthController {
     return this.authService.login(user);
   }
 
-  @ApiOkResponse({
-    description: 'Ok',
+  @ApiCreatedResponse({
+    description: 'Created',
     schema: {
       properties: {
         accessToken: { type: 'string' },
@@ -59,7 +66,6 @@ export class AuthController {
     },
   })
   @Post('register')
-  @HttpCode(HttpStatus.OK)
   async register(@Body() registerDto: RegisterDto) {
     return this.authService.register(registerDto);
   }

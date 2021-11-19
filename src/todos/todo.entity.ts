@@ -1,5 +1,5 @@
 import { Field, Int, ObjectType } from '@nestjs/graphql';
-import { ApiHideProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 
 import { User } from '@/users/user.entity';
@@ -7,31 +7,37 @@ import { User } from '@/users/user.entity';
 @ObjectType()
 @Entity('todos')
 export class Todo {
+  @ApiProperty()
   @Field(() => Int)
   @PrimaryGeneratedColumn()
   id!: number;
 
+  @ApiProperty()
   @Column()
   userId!: number;
 
+  @ApiProperty()
   @Field()
   @Column()
   title!: string;
 
+  @ApiProperty()
   @Field()
   @Column()
   completed!: boolean;
 
-  @ApiHideProperty()
-  @Field(() => User)
-  @ManyToOne(() => User, user => user.todos)
-  user!: User;
-
+  @ApiProperty()
   @Field()
   @CreateDateColumn()
   createdAt!: Date;
 
+  @ApiProperty()
   @Field()
   @UpdateDateColumn()
   updatedAt!: Date;
+
+  @ApiPropertyOptional()
+  @Field(() => User)
+  @ManyToOne(() => User, user => user.todos)
+  user!: User;
 }
