@@ -6,7 +6,11 @@ type FindByIds<Input, Returned> = (ids: Input[]) => Promise<Record<number | stri
 
 const dataLoaderMap = new Map();
 
-export function createDataLoader<Input extends Key, Returned>(key: string, findByIds: FindByIds<Input, Returned>, defaultValue: Returned) {
+export function createDataLoader<Input extends Key, Returned>(
+  key: string,
+  findByIds: FindByIds<Input, Returned>,
+  defaultValue: Returned,
+) {
   let dataLoader = dataLoaderMap.get(key);
   if (dataLoader == null) {
     dataLoader = new DataLoader<Input, Returned>(async (keys) => {
