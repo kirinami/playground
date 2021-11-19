@@ -77,8 +77,8 @@ export class TodosController {
     allowEmptyValue: false,
   })
   @Get(':id')
-  async retrieveById(@Param('id') id: number, @Query('relations') relations?: string) {
-    const todo = await this.todosService.findOneById(id, relations?.split(',').map(r => r.trim()).filter(Boolean));
+  async retrieveById(@CurrentUser() user: User, @Param('id') id: number, @Query('relations') relations?: string) {
+    const todo = await this.todosService.findOneByIdAndUserId(id, user.id, relations?.split(',').map(r => r.trim()).filter(Boolean));
     if (!todo) throw new NotFoundException();
 
     return todo;
@@ -118,9 +118,9 @@ export class TodosController {
   })
   @Post()
   async create(@CurrentUser() user: User, @Body() createTodoDto: CreateTodoDto, @Query('relations') relations?: string) {
-    const { id } = await this.todosService.create({ ...createTodoDto, userId: user.id });
+    const { id } = await this.todosService.createByUserId(user.id, createTodoDto);
 
-    const todo = await this.todosService.findOneById(id, relations?.split(',').map(r => r.trim()).filter(Boolean));
+    const todo = await this.todosService.findOneByIdAndUserId(id, user.id, relations?.split(',').map(r => r.trim()).filter(Boolean));
     if (!todo) throw new NotFoundException();
 
     return todo;
@@ -160,10 +160,10 @@ export class TodosController {
   })
   @Patch(':id')
   async update(@CurrentUser() user: User, @Param('id') id: number, @Body() updateTodoDto: UpdateTodoDto, @Query('relations') relations?: string) {
-    const { affected } = await this.todosService.update(id, { ...updateTodoDto, userId: user.id });
+    const { affected } = await this.todosService.updateByIdAndUserId(id, user.id, updateTodoDto);
     if (affected === 0) throw new NotFoundException();
 
-    const todo = await this.todosService.findOneById(id, relations?.split(',').map(r => r.trim()).filter(Boolean));
+    const todo = await this.todosService.findOneByIdAndUserId(id, user.id, relations?.split(',').map(r => r.trim()).filter(Boolean));
     if (!todo) throw new NotFoundException();
 
     return todo;
@@ -182,8 +182,8 @@ export class TodosController {
     },
   })
   @Delete(':id')
-  async delete(@Param('id') id: number) {
-    const { affected } = await this.todosService.delete(id);
+  async delete(@CurrentUser() user: User, @Param('id') id: number) {
+    const { affected } = await this.todosService.deleteByIdAndUserId(id, user.id);
     if (affected === 0) throw new NotFoundException();
   }
 }

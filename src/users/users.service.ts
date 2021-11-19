@@ -1,4 +1,8 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
+import { In } from 'typeorm';
+import { groupBy, reduce, uniq } from 'lodash';
+
+import { createDataLoader } from '@/utils/create-data-loader';
 
 import { CreateUserDto } from './dto/create-user.dto';
 import { User } from './user.entity';
@@ -36,6 +40,23 @@ export class UsersService {
     if (!match) return null;
 
     return user;
+  }
+
+  async loadOneById(id: number) {
+    return createDataLoader<number, User | undefined>('users/loadOneById', async (ids) => {
+      const users = await this.userRepository.find({
+        where: {
+          id: In(uniq(ids)),
+        },
+      });
+
+      return reduce<Record<number, User[]>, Record<number, User>>(
+        groupBy(users, 'id'),
+        (acc, [user], key) => ({ ...acc, [key]: user }),
+        {},
+      );
+    }, undefined)
+      .load(id);
   }
 
   async create(createUserDto: CreateUserDto) {

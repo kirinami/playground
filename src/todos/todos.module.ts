@@ -1,5 +1,7 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+
+import { UsersModule } from '@/users/users.module';
 
 import { TodoRepository } from './todo.repository';
 import { TodosService } from './todos.service';
@@ -11,6 +13,7 @@ import { TodosResolver } from './todos.resolver';
     TypeOrmModule.forFeature([
       TodoRepository,
     ]),
+    forwardRef(() => UsersModule),
   ],
   providers: [TodosService, TodosResolver],
   controllers: [TodosController],

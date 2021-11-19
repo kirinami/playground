@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { DeepPartial, In } from 'typeorm';
-import { groupBy } from 'lodash';
+import { groupBy, uniq } from 'lodash';
 
 import { createDataLoader } from '@/utils/create-data-loader';
 import { Todo } from './todo.entity';
@@ -11,16 +11,13 @@ export class TodosService {
   constructor(private readonly todoRepository: TodoRepository) {
   }
 
-  async findAll() {
-    return this.todoRepository.find();
-  }
-
-  async findOneById(id: number, relations?: string[]) {
+  async findOneByIdAndUserId(id: number, userId: number, relations?: string[]) {
     if (relations && !relations.includes('user')) throw new BadRequestException();
 
     return this.todoRepository.findOne({
       where: {
         id,
+        userId,
       },
       relations,
     });
@@ -38,10 +35,10 @@ export class TodosService {
   }
 
   async loadAllByUserId(userId: number) {
-    return createDataLoader<number, Todo[]>('todos/findAllByUserId', async (userIds) => {
+    return createDataLoader<number, Todo[]>('todos/loadAllByUserId', async (userIds) => {
       const todos = await this.todoRepository.find({
         where: {
-          userId: In(userIds),
+          userId: In(uniq(userIds)),
         },
       });
 
@@ -50,15 +47,15 @@ export class TodosService {
       .load(userId);
   }
 
-  async create(partialTodo: DeepPartial<Todo>) {
-    return this.todoRepository.save(this.todoRepository.create(partialTodo));
+  async createByUserId(userId: number, partialTodo: DeepPartial<Todo>) {
+    return this.todoRepository.save(this.todoRepository.create({ ...partialTodo, userId }));
   }
 
-  async update(id: number, partialTodo: DeepPartial<Todo>) {
-    return this.todoRepository.update(id, partialTodo);
+  async updateByIdAndUserId(id: number, userId: number, partialTodo: DeepPartial<Todo>) {
+    return this.todoRepository.update({ id, userId }, partialTodo);
   }
 
-  async delete(id: number) {
-    return this.todoRepository.delete(id);
+  async deleteByIdAndUserId(id: number, userId: number) {
+    return this.todoRepository.delete({ id, userId });
   }
 }
