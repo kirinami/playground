@@ -1,15 +1,4 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  InternalServerErrorException,
-  NotFoundException,
-  Param,
-  Patch,
-  Post,
-  Query,
-} from '@nestjs/common';
+import { Body, Controller, Delete, Get, NotFoundException, Param, Patch, Post, Query } from '@nestjs/common';
 import { ApiBadRequestResponse, ApiNotFoundResponse, ApiOkResponse, ApiQuery, ApiTags } from '@nestjs/swagger';
 
 import { CurrentUser } from '@/auth/decorators/current-user.decorator';
@@ -109,6 +98,15 @@ export class TodosController {
       },
     },
   })
+  @ApiNotFoundResponse({
+    description: 'Not Found',
+    schema: {
+      properties: {
+        statusCode: { type: 'number', example: 404 },
+        message: { type: 'string' },
+      },
+    },
+  })
   @ApiQuery({
     name: 'relations',
     type: 'string',
@@ -123,18 +121,14 @@ export class TodosController {
     const { id } = await this.todosService.create({ ...createTodoDto, userId: user.id });
 
     const todo = await this.todosService.findOneById(id, relations?.split(',').map(r => r.trim()).filter(Boolean));
-    if (!todo) throw new InternalServerErrorException();
+    if (!todo) throw new NotFoundException();
 
     return todo;
   }
 
   @ApiOkResponse({
     description: 'Ok',
-    schema: {
-      properties: {
-        affected: { type: 'number' },
-      },
-    },
+    type: Todo,
   })
   @ApiBadRequestResponse({
     description: 'Bad Request',
@@ -155,23 +149,28 @@ export class TodosController {
       },
     },
   })
+  @ApiQuery({
+    name: 'relations',
+    type: 'string',
+    isArray: true,
+    style: 'form',
+    explode: false,
+    required: false,
+    allowEmptyValue: false,
+  })
   @Patch(':id')
-  async update(@Param('id') id: number, @Body() updateTodoDto: UpdateTodoDto, @CurrentUser() user: User) {
+  async update(@CurrentUser() user: User, @Param('id') id: number, @Body() updateTodoDto: UpdateTodoDto, @Query('relations') relations?: string) {
     const { affected } = await this.todosService.update(id, { ...updateTodoDto, userId: user.id });
     if (affected === 0) throw new NotFoundException();
 
-    return {
-      affected,
-    };
+    const todo = await this.todosService.findOneById(id, relations?.split(',').map(r => r.trim()).filter(Boolean));
+    if (!todo) throw new NotFoundException();
+
+    return todo;
   }
 
   @ApiOkResponse({
     description: 'Ok',
-    schema: {
-      properties: {
-        affected: { type: 'number' },
-      },
-    },
   })
   @ApiNotFoundResponse({
     description: 'Not Found',
@@ -186,9 +185,5 @@ export class TodosController {
   async delete(@Param('id') id: number) {
     const { affected } = await this.todosService.delete(id);
     if (affected === 0) throw new NotFoundException();
-
-    return {
-      affected,
-    };
   }
 }
