@@ -18,7 +18,7 @@ services:
       - traefik.enable=true
       - traefik.http.routers.kirinami_com_todos.rule=Host(`todos.kirinami.com`)
       - traefik.http.routers.kirinami_com_todos.entrypoints=web
-      - traefik.http.services.kirinami_com_todos.loadbalancer.server.port=3000
+      - traefik.http.services.kirinami_com_todos.loadbalancer.server.port=${PORT}
     build: .
     volumes:
       - $PWD/runtime:/app/runtime
@@ -26,7 +26,7 @@ services:
       - traefik
       - backend
     expose:
-      - 3000
+      - ${PORT}
     restart: unless-stopped
 
 volumes:

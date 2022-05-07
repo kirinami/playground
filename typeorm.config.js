@@ -12,8 +12,8 @@ module.exports = {
   password: process.env.POSTGRES_PASSWORD,
   synchronize: false,
   logging: ['warn', 'error'],
-  migrations: ['db/migrations/*.ts'],
-  entities: ['src/**/*.entity.ts'],
+  migrations: ['db/migrations/*.{js,ts}'],
+  entities: ['src/**/*.entity.{js,ts}'],
   migrationsTableName: 'migrations',
   metadataTableName: 'metadata',
 };
