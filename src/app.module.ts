@@ -20,8 +20,8 @@ import { UsersModule } from './users/users.module';
       logging: ['query', 'warn', 'error'],
     }),
     GraphQLModule.forRoot({
-      debug: process.env.NODE_ENV !== 'production',
-      playground: process.env.NODE_ENV !== 'production',
+      debug: true,
+      playground: true,
       autoSchemaFile: true,
       installSubscriptionHandlers: true,
     }),

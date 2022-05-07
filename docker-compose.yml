@@ -1,4 +1,4 @@
-version: '3.7'
+version: '3.8'
 
 services:
   postgres:
@@ -12,18 +12,25 @@ services:
       - backend
     restart: unless-stopped
 
-  api:
-    image: kirinami-todos
+  app:
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.app.rule=Host(`todos.kirinami.com`)
+      - traefik.http.routers.app.entrypoints=web
+      - traefik.http.services.app.loadbalancer.server.port=3000
+    image: .
     volumes:
-      - ./runtime:/usr/src/app/runtime
+      - $PWD/runtime:/usr/src/app/runtime
     networks:
+      - traefik
       - backend
-    ports:
-      - 3000:3000
     restart: unless-stopped
 
 volumes:
   postgres:
 
 networks:
+  traefik:
+    external:
+      name: "traefik"
   backend:
