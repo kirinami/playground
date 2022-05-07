@@ -23,6 +23,7 @@ import { UsersModule } from './users/users.module';
     GraphQLModule.forRoot({
       driver: ApolloDriver,
       debug: true,
+      introspection: true,
       playground: true,
       autoSchemaFile: true,
       installSubscriptionHandlers: true,
