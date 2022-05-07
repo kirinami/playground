@@ -33,7 +33,7 @@ export class TodosService {
       },
       relations,
       order: {
-        id: 'DESC',
+        id: 'ASC',
       },
     });
   }
@@ -45,7 +45,7 @@ export class TodosService {
           userId: In(uniq(userIds)),
         },
         order: {
-          id: 'DESC',
+          id: 'ASC',
         },
       });
 
