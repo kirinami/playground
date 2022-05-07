@@ -15,9 +15,9 @@ services:
   app:
     labels:
       - traefik.enable=true
-      - traefik.http.routers.app.rule=Host(`todos.kirinami.com`)
-      - traefik.http.routers.app.entrypoints=web
-      - traefik.http.services.app.loadbalancer.server.port=3000
+      - traefik.http.routers.todos_kirinami_com.rule=Host(`todos.kirinami.com`)
+      - traefik.http.routers.todos_kirinami_com.entrypoints=web
+      - traefik.http.services.todos_kirinami_com.loadbalancer.server.port=3000
     image: .
     volumes:
       - $PWD/runtime:/app/runtime
