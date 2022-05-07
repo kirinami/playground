@@ -28,6 +28,4 @@ COPY .env* ./
 
 COPY --from=builder /app/dist .
 
-EXPOSE $PORT
-
 CMD ["node", "src/main.js"]
