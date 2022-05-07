@@ -1,4 +1,4 @@
-# KindredBox - API
+# Playground - API
 
 This project was bootstrapped with [NestJS](https://github.com/nestjs/nest) and [TypeORM](https://github.com/typeorm/typeorm).
 
