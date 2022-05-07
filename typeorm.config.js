@@ -1,4 +1,10 @@
-require('./env.config');
+try {
+  require('ts-node/register');
+  require('tsconfig-paths/register');
+} catch (err) {
+} finally {
+  require('./env.config');
+}
 
 module.exports = {
   cli: {
