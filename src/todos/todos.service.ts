@@ -32,6 +32,9 @@ export class TodosService {
         userId,
       },
       relations,
+      order: {
+        id: 'DESC',
+      },
     });
   }
 
@@ -40,6 +43,9 @@ export class TodosService {
       const todos = await this.todoRepository.find({
         where: {
           userId: In(uniq(userIds)),
+        },
+        order: {
+          id: 'DESC',
         },
       });
 
