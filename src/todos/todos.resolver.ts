@@ -52,7 +52,7 @@ export class TodosResolver {
     return todo;
   }
 
-  @Mutation(() => Boolean, { name: 'todosDelete' })
+  @Mutation(() => Todo, { name: 'todosDelete' })
   async delete(@CurrentUser() user: User, @Args('id') id: number) {
     const todo = await this.todosService.findOneByIdAndUserId(id, user.id);
     if (!todo) throw new NotFoundException();
