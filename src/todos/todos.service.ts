@@ -1,4 +1,5 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
+import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
 import { DeepPartial, In } from 'typeorm';
 import { groupBy, uniq } from 'lodash';
 
@@ -51,8 +52,8 @@ export class TodosService {
     return this.todoRepository.save(this.todoRepository.create({ ...partialTodo, userId }));
   }
 
-  async updateByIdAndUserId(id: number, userId: number, partialTodo: DeepPartial<Todo>) {
-    return this.todoRepository.update({ id, userId }, partialTodo);
+  async updateByIdAndUserId(id: number, userId: number, partialTodo: QueryDeepPartialEntity<Todo>) {
+    return this.todoRepository.update({ id, userId }, { ...partialTodo });
   }
 
   async deleteByIdAndUserId(id: number, userId: number) {

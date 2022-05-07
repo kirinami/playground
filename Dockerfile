@@ -1,6 +1,6 @@
 FROM node:14.18-alpine AS builder
 
-WORKDIR /usr/src/app
+WORKDIR /app
 
 COPY package.json yarn.lock ./
 
@@ -8,7 +8,8 @@ RUN yarn install --frozen-lockfile
 
 COPY . .
 
-ENV NODE_ENV="production"
+ENV NODE_ENV production
+ENV NODE_OPTIONS --max_old_space_size=4096
 
 RUN yarn build
 
@@ -16,13 +17,14 @@ RUN rm -rf node_modules && yarn cache clean && yarn install --frozen-lockfile --
 
 FROM node:14.18-alpine
 
-WORKDIR /usr/src/app
+WORKDIR /app
 
-COPY --from=builder /usr/src/app/dist dist
-COPY --from=builder /usr/src/app/node_modules node_modules
-COPY --from=builder /usr/src/app/.env* /usr/src/app/env.config.js ./
-COPY --from=builder /usr/src/app/package.json /usr/src/app/yarn.lock ./
+COPY --from=builder /app/dist dist
+COPY --from=builder /app/node_modules node_modules
+COPY --from=builder /app/.env* /app/env.config.js /app/typeorm.config.js ./
+COPY --from=builder /app/package.json /app/yarn.lock ./
 
-ENV NODE_ENV="production"
+ENV NODE_ENV production
+ENV NODE_OPTIONS --max_old_space_size=4096
 
-CMD ["node", "dist/main"]
+CMD ["node", "dist/main.js"]

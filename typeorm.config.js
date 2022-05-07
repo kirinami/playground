@@ -14,4 +14,6 @@ module.exports = {
   logging: ['warn', 'error'],
   migrations: ['db/migrations/*.ts'],
   entities: ['src/**/*.entity.ts'],
+  migrationsTableName: 'migrations',
+  metadataTableName: 'metadata',
 };

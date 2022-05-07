@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ApolloDriver } from '@nestjs/apollo';
 import { GraphQLModule } from '@nestjs/graphql';
 
 import { AuthModule } from './auth/auth.module';
@@ -20,6 +21,7 @@ import { UsersModule } from './users/users.module';
       logging: ['query', 'warn', 'error'],
     }),
     GraphQLModule.forRoot({
+      driver: ApolloDriver,
       debug: true,
       playground: true,
       autoSchemaFile: true,
