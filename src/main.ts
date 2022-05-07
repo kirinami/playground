@@ -31,13 +31,13 @@ async function main() {
   SwaggerModule.setup('docs', app, SwaggerModule.createDocument(
     app,
     new DocumentBuilder()
-      .setTitle('Todos API')
-      .setDescription('The Todos API documentation')
+      .setTitle('Playground API')
+      .setDescription('The Playground API documentation')
       .setVersion('0.0.1')
       .addBearerAuth()
       .build(),
   ), {
-    customSiteTitle: 'Todos API',
+    customSiteTitle: 'Playground API',
     swaggerOptions: {
       persistAuthorization: true,
     },
