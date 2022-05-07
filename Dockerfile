@@ -19,12 +19,11 @@ FROM node:14.18-alpine
 
 WORKDIR /app
 
-COPY --from=builder /app/dist dist
+COPY --from=builder /app/dist .
 COPY --from=builder /app/node_modules node_modules
-COPY --from=builder /app/.env* /app/env.config.js /app/typeorm.config.js ./
-COPY --from=builder /app/package.json /app/yarn.lock ./
+COPY --from=builder /app/.env* /app/package.json /app/yarn.lock ./
 
 ENV NODE_ENV production
 ENV NODE_OPTIONS --max_old_space_size=4096
 
-CMD ["node", "dist/main.js"]
+CMD ["node", "src/main.js"]
