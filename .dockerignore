@@ -1,13 +1,18 @@
-# system
-.DS_Store
-
 # git
 .git
 .github
 
+# system
+.DS_Store
+
 # ide
 .idea
 .vscode
+
+# dependencies
+node_modules
+yarn-debug.log*
+yarn-error.log*
 
 # compiled output
 coverage
@@ -19,5 +24,6 @@ tmp
 .eslintcache
 
 # misc
+runtime
 .env.local
 .env.*.local

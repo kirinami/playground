@@ -10,15 +10,9 @@
 !.idea/webResources.xml
 !.idea/*.iml
 !.idea/.gitignore
+.vscode/*
 
 # dependencies
-.pnp.*
-.yarn/*
-!.yarn/patches
-!.yarn/plugins
-!.yarn/releases
-!.yarn/sdks
-!.yarn/versions
 node_modules
 yarn-debug.log*
 yarn-error.log*
@@ -33,5 +27,6 @@ tmp
 .eslintcache
 
 # misc
+runtime
 .env.local
 .env.*.local
