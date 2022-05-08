@@ -183,7 +183,12 @@ export class TodosController {
   })
   @Delete(':id')
   async delete(@CurrentUser() user: User, @Param('id') id: number) {
+    const todo = await this.todosService.findOneByIdAndUserId(id, user.id);
+    if (!todo) throw new NotFoundException();
+
     const { affected } = await this.todosService.deleteByIdAndUserId(id, user.id);
     if (affected === 0) throw new NotFoundException();
+
+    return todo;
   }
 }
