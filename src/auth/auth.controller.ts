@@ -11,9 +11,10 @@ import {
 import { User } from '@/users/user.entity';
 
 import { CurrentUser } from './decorators/current-user.decorator';
+import { JwtRefreshGuard } from './guards/jwt-refresh.guard';
 import { LoginDto } from './dto/login.dto';
 import { RegisterDto } from './dto/register.dto';
-import { LocalAuthGuard } from './guards/local-auth.guard';
+import { LocalGuard } from './guards/local.guard';
 import { AuthService } from './auth.service';
 
 @ApiTags('auth')
@@ -27,6 +28,7 @@ export class AuthController {
     schema: {
       properties: {
         accessToken: { type: 'string' },
+        refreshToken: { type: 'string' },
       },
     },
   })
@@ -40,7 +42,7 @@ export class AuthController {
     },
   })
   @ApiBody({ type: LoginDto })
-  @UseGuards(LocalAuthGuard)
+  @UseGuards(LocalGuard)
   @Post('login')
   @HttpCode(HttpStatus.OK)
   async login(@CurrentUser() user: User) {
@@ -52,6 +54,7 @@ export class AuthController {
     schema: {
       properties: {
         accessToken: { type: 'string' },
+        refreshToken: { type: 'string' },
       },
     },
   })
@@ -68,5 +71,37 @@ export class AuthController {
   @Post('register')
   async register(@Body() registerDto: RegisterDto) {
     return this.authService.register(registerDto);
+  }
+
+  @ApiOkResponse({
+    description: 'Ok',
+    schema: {
+      properties: {
+        accessToken: { type: 'string' },
+        refreshToken: { type: 'string' },
+      },
+    },
+  })
+  @ApiUnauthorizedResponse({
+    description: 'Unauthorized',
+    schema: {
+      properties: {
+        statusCode: { type: 'number', example: 401 },
+        message: { type: 'string' },
+      },
+    },
+  })
+  @ApiBody({
+    schema: {
+      properties: {
+        refreshToken: { type: 'string' },
+      },
+    },
+  })
+  @UseGuards(JwtRefreshGuard)
+  @Post('refresh')
+  @HttpCode(HttpStatus.OK)
+  async refresh(@CurrentUser() user: User) {
+    return this.login(user);
   }
 }

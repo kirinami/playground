@@ -2,7 +2,7 @@ import { Body, Controller, Delete, Get, NotFoundException, Param, Patch, Post, Q
 import { ApiBadRequestResponse, ApiNotFoundResponse, ApiOkResponse, ApiQuery, ApiTags } from '@nestjs/swagger';
 
 import { CurrentUser } from '@/auth/decorators/current-user.decorator';
-import { JwtAuth } from '@/auth/decorators/jwt-auth.decorator';
+import { JwtAccess } from '../auth/decorators/jwt-access.decorator';
 import { User } from '@/users/user.entity';
 
 import { CreateTodoDto } from './dto/create-todo.dto';
@@ -11,7 +11,7 @@ import { TodosService } from './todos.service';
 import { Todo } from './todo.entity';
 
 @ApiTags('todos')
-@JwtAuth()
+@JwtAccess()
 @Controller('todos')
 export class TodosController {
   constructor(private readonly todosService: TodosService) {

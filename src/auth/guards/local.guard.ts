@@ -4,7 +4,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { getRequestFromContext } from '@/utils/get-request-from-context';
 
 @Injectable()
-export class JwtAuthGuard extends AuthGuard('jwt') {
+export class LocalGuard extends AuthGuard('local') {
   getRequest(context: ExecutionContext) {
     return getRequestFromContext(context);
   }

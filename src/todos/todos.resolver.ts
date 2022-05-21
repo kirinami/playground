@@ -2,7 +2,7 @@ import { NotFoundException } from '@nestjs/common';
 import { Args, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
 
 import { CurrentUser } from '@/auth/decorators/current-user.decorator';
-import { JwtAuth } from '@/auth/decorators/jwt-auth.decorator';
+import { JwtAccess } from '../auth/decorators/jwt-access.decorator';
 
 import { User } from '@/users/user.entity';
 import { UsersService } from '@/users/users.service';
@@ -12,7 +12,7 @@ import { UpdateTodoInput } from './inputs/update-todo.input';
 import { Todo } from './todo.entity';
 import { TodosService } from './todos.service';
 
-@JwtAuth()
+@JwtAccess()
 @Resolver(() => Todo)
 export class TodosResolver {
   constructor(

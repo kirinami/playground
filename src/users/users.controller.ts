@@ -2,13 +2,13 @@ import { Controller, Get, Query } from '@nestjs/common';
 import { ApiBadRequestResponse, ApiQuery, ApiTags } from '@nestjs/swagger';
 
 import { CurrentUser } from '@/auth/decorators/current-user.decorator';
-import { JwtAuth } from '@/auth/decorators/jwt-auth.decorator';
+import { JwtAccess } from '../auth/decorators/jwt-access.decorator';
 
 import { UsersService } from './users.service';
 import { User } from './user.entity';
 
 @ApiTags('users')
-@JwtAuth()
+@JwtAccess()
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {

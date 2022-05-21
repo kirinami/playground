@@ -1,14 +1,14 @@
 import { Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
 
 import { CurrentUser } from '@/auth/decorators/current-user.decorator';
-import { JwtAuth } from '@/auth/decorators/jwt-auth.decorator';
+import { JwtAccess } from '../auth/decorators/jwt-access.decorator';
 
 import { Todo } from '@/todos/todo.entity';
 import { TodosService } from '@/todos/todos.service';
 
 import { User } from './user.entity';
 
-@JwtAuth()
+@JwtAccess()
 @Resolver(() => User)
 export class UsersResolver {
   constructor(private readonly todosService: TodosService) {
