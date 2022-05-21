@@ -3,6 +3,7 @@ import {
   ApiBadRequestResponse,
   ApiBody,
   ApiCreatedResponse,
+  ApiHeader,
   ApiOkResponse,
   ApiTags,
   ApiUnauthorizedResponse,
@@ -91,12 +92,8 @@ export class AuthController {
       },
     },
   })
-  @ApiBody({
-    schema: {
-      properties: {
-        refreshToken: { type: 'string' },
-      },
-    },
+  @ApiHeader({
+    name: 'Refresh-Token',
   })
   @UseGuards(JwtRefreshGuard)
   @Post('refresh')
