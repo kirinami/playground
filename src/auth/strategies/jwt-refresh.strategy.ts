@@ -14,7 +14,10 @@ export class JwtRefreshStrategy extends PassportStrategy(Strategy, 'jwt-refresh'
     private readonly usersService: UsersService,
   ) {
     super({
-      jwtFromRequest: ExtractJwt.fromHeader('Refresh-Token'),
+      jwtFromRequest: ExtractJwt.fromExtractors([
+        ExtractJwt.fromHeader('refresh-token'),
+        ExtractJwt.fromBodyField('refreshToken'),
+      ]),
       secretOrKey: process.env.REFRESH_TOKEN_SECRET,
       expiresIn: process.env.REFRESH_TOKEN_EXPIRES_IN,
       passReqToCallback: true,
@@ -22,7 +25,10 @@ export class JwtRefreshStrategy extends PassportStrategy(Strategy, 'jwt-refresh'
   }
 
   async validate(req: Request, payload: { id: number }) {
-    const jwtToken = ExtractJwt.fromHeader('Refresh-Token')(req);
+    const jwtToken = ExtractJwt.fromExtractors([
+      ExtractJwt.fromHeader('refresh-token'),
+      ExtractJwt.fromBodyField('refreshToken'),
+    ])(req);
     if (!jwtToken) throw new UnauthorizedException();
 
     const refreshToken = await this.tokensService.get(payload.id, 'refreshToken');

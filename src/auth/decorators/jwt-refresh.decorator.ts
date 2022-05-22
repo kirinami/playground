@@ -1,12 +1,19 @@
 import { applyDecorators, UseGuards } from '@nestjs/common';
-import { ApiBearerAuth, ApiUnauthorizedResponse } from '@nestjs/swagger';
+import { ApiBody, ApiUnauthorizedResponse } from '@nestjs/swagger';
 
 import { JwtRefreshGuard } from '../guards/jwt-refresh.guard';
 
 export function JwtRefresh() {
   return applyDecorators(
     UseGuards(JwtRefreshGuard),
-    ApiBearerAuth(),
+    ApiBody({
+      schema: {
+        properties: {
+          refreshToken: { type: 'string' },
+        },
+        required: ['refreshToken'],
+      },
+    }),
     ApiUnauthorizedResponse({
       description: 'Unauthorized',
       schema: {

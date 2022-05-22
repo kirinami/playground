@@ -3,7 +3,6 @@ import {
   ApiBadRequestResponse,
   ApiBody,
   ApiCreatedResponse,
-  ApiHeader,
   ApiOkResponse,
   ApiTags,
   ApiUnauthorizedResponse,
@@ -12,7 +11,7 @@ import {
 import { User } from '@/users/user.entity';
 
 import { CurrentUser } from './decorators/current-user.decorator';
-import { JwtRefreshGuard } from './guards/jwt-refresh.guard';
+import { JwtRefresh } from './decorators/jwt-refresh.decorator';
 import { LoginDto } from './dto/login.dto';
 import { RegisterDto } from './dto/register.dto';
 import { LocalGuard } from './guards/local.guard';
@@ -83,19 +82,7 @@ export class AuthController {
       },
     },
   })
-  @ApiUnauthorizedResponse({
-    description: 'Unauthorized',
-    schema: {
-      properties: {
-        statusCode: { type: 'number', example: 401 },
-        message: { type: 'string' },
-      },
-    },
-  })
-  @ApiHeader({
-    name: 'Refresh-Token',
-  })
-  @UseGuards(JwtRefreshGuard)
+  @JwtRefresh()
   @Post('refresh')
   @HttpCode(HttpStatus.OK)
   async refresh(@CurrentUser() user: User) {
