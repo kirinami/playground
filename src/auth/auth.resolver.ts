@@ -23,7 +23,7 @@ export class AuthResolver {
   ) {
   }
 
-  @Query(() => Auth, { name: 'login' })
+  @Mutation(() => Auth, { name: 'login' })
   async login(@Args('email') email: string, @Args('password') password: string) {
     const user = await this.localStrategy.validate(email, password);
 
