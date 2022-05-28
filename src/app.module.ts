@@ -27,6 +27,11 @@ import { UsersModule } from './users/users.module';
       playground: true,
       autoSchemaFile: true,
       installSubscriptionHandlers: true,
+      formatError: (error: any) => ({
+        message: error.extensions?.exception?.response?.message || error.extensions?.response?.message || error.message,
+        code: error.extensions?.code || 'SERVER_ERROR',
+        name: error.extensions?.exception?.name || error.name,
+      }),
     }),
     AuthModule,
     TodosModule,
